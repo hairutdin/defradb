@@ -408,6 +408,7 @@ func (g *Generator) createExpandedFieldSingle(
 				g.manager.schema.TypeMap()[typeName+filterInputNameSuffix],
 				singleFieldFilterArgDescription,
 			),
+			request.ShowDeleted: schemaTypes.NewArgConfig(gql.Boolean, showDeletedArgDescription),
 		},
 	}
 	return field, nil
@@ -437,6 +438,7 @@ func (g *Generator) createExpandedFieldList(
 				gql.NewList(g.manager.schema.TypeMap()[typeName+"OrderArg"]),
 				schemaTypes.OrderArgDescription,
 			),
+			request.ShowDeleted:  schemaTypes.NewArgConfig(gql.Boolean, showDeletedArgDescription),
 			request.LimitClause:  schemaTypes.NewArgConfig(gql.Int, schemaTypes.LimitArgDescription),
 			request.OffsetClause: schemaTypes.NewArgConfig(gql.Int, schemaTypes.OffsetArgDescription),
 		},

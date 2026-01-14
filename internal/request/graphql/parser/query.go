@@ -169,7 +169,7 @@ func parseSelect(
 
 		case request.ShowDeleted:
 			if v, ok := value.(bool); ok {
-				slct.ShowDeleted = v
+				slct.ShowDeleted = immutable.Some(v)
 			}
 		}
 	}

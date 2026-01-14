@@ -266,7 +266,10 @@ func prepareScanNodeFilterForTypeJoin(
 	source planNode,
 	subType *mapper.Select,
 ) {
-	subType.ShowDeleted = parent.selectReq.ShowDeleted
+	// Only propagate parent's showDeleted if the child doesn't have an explicit value
+	if !subType.ShowDeleted.HasValue() {
+		subType.ShowDeleted = parent.selectReq.ShowDeleted
+	}
 
 	scan, ok := source.(*scanNode)
 	if !ok || scan.filter == nil {

@@ -268,7 +268,7 @@ func (n *selectNode) initSource() ([]aggregateNode, []*similarityNode, error) {
 	// @todo: simulate splitting for now
 	origScan, isScanNode := n.source.(*scanNode)
 	if isScanNode {
-		origScan.showDeleted = n.selectReq.ShowDeleted
+		origScan.showDeleted = n.selectReq.ShowDeleted.Value()
 		origScan.filter = n.filter
 		if n.selectReq.OrderBy != nil {
 			origScan.ordering = n.selectReq.OrderBy.Conditions

@@ -31,9 +31,9 @@ type Select struct {
 	CIDFilter
 	Groupable
 
-	// ShowDeleted will return deleted documents along with non-deleted ones
-	// if set to true.
-	ShowDeleted bool
+	// ShowDeleted will return deleted documents along with non-deleted ones.
+	// If None, inherits from parent query. If Some(true/false), explicitly set.
+	ShowDeleted immutable.Option[bool]
 
 	// IsEncrypted indicates that this is an encrypted query that should
 	// use searchable encryption to query remote nodes.
@@ -153,7 +153,7 @@ type selectJson struct {
 	DocIDsFilter
 	CIDFilter
 	Groupable
-	ShowDeleted bool
+	ShowDeleted *bool `json:"showDeleted,omitempty"`
 }
 
 func (s *Select) UnmarshalJSON(bytes []byte) error {
@@ -171,7 +171,12 @@ func (s *Select) UnmarshalJSON(bytes []byte) error {
 	s.Orderable = selectMap.Orderable
 	s.Groupable = selectMap.Groupable
 	s.Filterable = selectMap.Filterable
-	s.ShowDeleted = selectMap.ShowDeleted
+
+	if selectMap.ShowDeleted != nil {
+		s.ShowDeleted = immutable.Some(*selectMap.ShowDeleted)
+	} else {
+		s.ShowDeleted = immutable.None[bool]()
+	}
 
 	var childSelect ChildSelect
 	err = json.Unmarshal(bytes, &childSelect)

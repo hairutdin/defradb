@@ -249,7 +249,9 @@ type Targetable struct {
 	// value
 	OrderBy *OrderBy
 
-	ShowDeleted bool
+	// ShowDeleted specifies whether deleted documents should be included in results.
+	// If None, inherits from parent. If Some(true/false), explicitly set.
+	ShowDeleted immutable.Option[bool]
 }
 
 func (t *Targetable) cloneTo(index int) *Targetable {
